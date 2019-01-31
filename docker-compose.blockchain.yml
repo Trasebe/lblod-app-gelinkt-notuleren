@@ -1,7 +1,7 @@
 version: "3.4"
 services:
   blockchain:
-    image: trase/blockchain-event-broker
+    image: trase/blockchain-event-broker:0.1.0
     restart: always
     environment:
       NODE_ENV: ${NODE_ENV}
@@ -9,8 +9,6 @@ services:
       - virtuoso:database
     ports:
       - "8888:80"
-    volumes:
-      - "/Users/mauricedalderup/dev/trase/LBLOD/lblod-blockchain-event-broker:/app/"
   blockchainNotifier:
     image: lblod/blockchain-informing-service
     restart: always
@@ -18,7 +16,7 @@ services:
       - virtuoso:database
       - blockchain:blockchain
   decisionservice:
-    image: trase/decision-service
+    image: trase/decision-service:0.1.0
     restart: always
     environment:
       NODE_ENV: ${NODE_ENV}
@@ -27,23 +25,19 @@ services:
     links:
       - virtuoso:database
     volumes:
-      - "/Users/mauricedalderup/dev/trase/LBLOD/lblod-decision-service:/app/"
-      - "/Users/mauricedalderup/dev/trase/LBLOD/network/artifacts/clients/:/clients/"
-      - "/Users/mauricedalderup/dev/trase/LBLOD/network/artifacts/config/:/config/"
-      - "/Users/mauricedalderup/dev/trase/LBLOD/certs/:/usr/src/app/certs/"
+      - "./config/blockchain/clients/:/clients/"
+      - "./config/blockchain/config/:/config/"
+      - "./config/blockchain/certs/:/usr/src/app/certs/"
   authentication:
-    image: trase/authentication-service
+    image: trase/authentication-service:0.1.0
     restart: always
     environment:
       NODE_ENV: ${NODE_ENV}
       ADMIN_PW: ${ADMIN_PW}
     volumes:
-      - "/Users/mauricedalderup/dev/trase/LBLOD/lblod-authentication-integration-service:/app/"
-      - "/Users/mauricedalderup/dev/trase/LBLOD/network/artifacts/clients/:/clients/"
-      - "/Users/mauricedalderup/dev/trase/LBLOD/network/artifacts/config/:/config/"
+      - "./config/blockchain/clients/:/clients/"
+      - "./config/blockchain/config/:/config/"
   frontend:
     image: trase/frontend-local
     ports:
       - "82:1234"
-    volumes:
-      - "/Users/mauricedalderup/dev/trase/LBLOD/lblod-frontend:/usr/src/app/"
