@@ -38,6 +38,6 @@ services:
       - "./config/blockchain/clients/:/clients/"
       - "./config/blockchain/config/:/config/"
   frontend:
-    image: trase/frontend-local
+    image: trase/frontend:0.1.0
     ports:
       - "82:1234"
